@@ -42,9 +42,7 @@ export const products = pgTable("products", {
   name: varchar({ length: 255 }).notNull(),
   description: varchar({ length: 255 }).notNull(),
   price: integer().notNull(),
-  categoryId: uuid()
-    .notNull()
-    .references(() => category.id),
+  categoryId: uuid().references(() => category.id),
   inventory: integer().notNull().default(0),
   imageUrl: varchar().notNull(),
   createdAt: timestamp().notNull().defaultNow(),

@@ -15,6 +15,13 @@
       "when": 1751199544616,
       "tag": "0001_added the cart and  like",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751220376702,
+      "tag": "0002_normal_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }
