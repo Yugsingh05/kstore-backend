@@ -8,6 +8,13 @@
       "when": 1751198164694,
       "tag": "0000_add-sales-tables",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751199544616,
+      "tag": "0001_added the cart and  like",
+      "breakpoints": true
     }
   ]
 }

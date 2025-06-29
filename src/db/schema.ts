@@ -79,3 +79,28 @@ export const saleDetails = pgTable("sale_details", {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
+
+export const cart = pgTable("cart", {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  userId: uuid()
+    .notNull()
+    .references(() => user.id),
+  productId: uuid()
+    .notNull()
+    .references(() => products.id),
+  quantity: integer().notNull(),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+});
+
+export const likeProduct = pgTable("like_product", {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  userId: uuid()
+    .notNull()
+    .references(() => user.id),
+  productId: uuid()
+    .notNull()
+    .references(() => products.id),
+  createdAt: timestamp().notNull().defaultNow(),
+  updatedAt: timestamp().notNull().defaultNow(),
+});
