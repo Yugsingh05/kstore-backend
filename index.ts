@@ -25,6 +25,7 @@ fastify.register(swagger, {
       { name: 'users', description: 'User related endpoints' },
       { name: 'products', description: 'Product related endpoints' },
       { name: 'sales', description: 'Sales and order related endpoints' },
+      { name: 'category', description: 'Category related endpoints' },
       { name: 'system', description: 'System related endpoints' }
     ]
   }
@@ -84,11 +85,13 @@ fastify.get('/api/status', {
 const userRoutes = require('./src/routes/users')
 const productRoutes = require('./src/routes/products')
 const salesRoutes = require('./src/routes/sales')
+const categoryRoutes = require('./src/routes/category')
 
 // Register routes with prefixes
 fastify.register(userRoutes, { prefix: '/api/users' })
 fastify.register(productRoutes, { prefix: '/api/products' })
 fastify.register(salesRoutes, { prefix: '/api/sales' })
+fastify.register(categoryRoutes, { prefix: '/api/category' })
 
 // Run the server!
 const start = async () => {

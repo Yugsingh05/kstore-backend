@@ -3,6 +3,7 @@ import { CategoryBodySchema, CategoryResponseSchema, categorySchema, ProductBody
 
 
 export const createProductSchema = {
+  tags: ["products"],
   body: ProductBodySchema,
   response: {
     201: ProductResponseSchema,
@@ -10,6 +11,7 @@ export const createProductSchema = {
 };
 
 export const getProductSchema = {
+   tags: ["products"],
   params: {
     type: "object",
     required: ["id"],
@@ -23,6 +25,7 @@ export const getProductSchema = {
 };
 
 export const updateProductSchema = {
+   tags: ["products"],
   params: {
     type: "object",
     required: ["id"],
@@ -37,6 +40,7 @@ export const updateProductSchema = {
 };
 
 export const getProductsSchema = {
+   tags: ["products"],
   querystring: {
     type: "object",
     properties: {
@@ -62,7 +66,35 @@ export const getProductsSchema = {
   },
 };
 
+export const GetCategoriesSchema = {
+   tags: ["category"],
+  querystring: {
+    type: "object",
+    properties: {
+      page: { type: "integer", minimum: 1, default: 1 },
+      limit: { type: "integer", minimum: 1, maximum: 100, default: 10 },
+      category: { type: "string" },
+    },
+  },
+  response: {
+    200: {
+      type: "object",
+      properties: {
+        data: {
+          type: "array",
+          items:CategoryResponseSchema,
+        },
+        total: { type: "integer" },
+        page: { type: "integer" },
+        limit: { type: "integer" },
+      },
+      required: ["total", "page", "limit"],
+    },
+  },
+};
+
 export const createCategorySchema = {
+    tags: ["category"],
   body: CategoryBodySchema,
   response: {
     201: CategoryResponseSchema,
@@ -70,6 +102,7 @@ export const createCategorySchema = {
 };
 
 export const getCategorySchema = {
+    tags: ["category"],
   params: {
     type: "object",
     required: ["id"],
@@ -77,13 +110,11 @@ export const getCategorySchema = {
       id: { type: "string", format: "uuid" },
     },
   },
-  response: {
-    200: CategoryResponseSchema,
-  },
 };
 
 
 export const UpdateCategoryBodySchema = {
+    tags: ["category"],
   params: {
     type: "object",
     required: ["id"],
@@ -98,6 +129,7 @@ export const UpdateCategoryBodySchema = {
 };
 
 export const DeleteCategorySchema = {
+    tags: ["category"],
   params: {
     type: "object",
     required: ["id"],
@@ -105,12 +137,10 @@ export const DeleteCategorySchema = {
       id: { type: "string", format: "uuid" },
     },
   },
-  response: {
-    200: CategoryResponseSchema,
-  },
 };
 
 export const DeleteProductSchema = {
+   tags: ["products"],
   params: {
     type: "object",
     required: ["id"],

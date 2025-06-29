@@ -18,13 +18,26 @@ class catalogRepo {
     return await this.dbInstance.select().from(category);
   }
 
-  async getCategoryById(id: string) {
-    return await this.dbInstance
-      .select()
-      .from(category)
-      .where(eq(category.id, id))
-      .leftJoin(products, eq(category.id, products.categoryId))
-  }
+async getCategoryById(id: string) {
+  const result = await this.dbInstance
+    .select()
+    .from(category)
+    .where(eq(category.id, id))
+    .leftJoin(products, eq(category.id, products.categoryId));
+
+  if (result.length === 0) return null;
+
+  const { category: catData } = result[0];
+
+  const productList = result
+    .filter(row => row.products !== null)
+    .map(row => row.products);
+
+  return {
+    ...catData,
+    products: productList,
+  };
+}
 
   async deleteCategory(id: string) {
     return await this.dbInstance.delete(category).where(eq(category.id, id));
