@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
 import { createUserSchema, getUserSchema, getUsersSchema, updateUserSchema } from './http/https.schema';
-import { CreateUser, GetAllUsers, GetUserById } from './use-case/user-case';
+import { CreateUser, DeleteUser, GetAllUsers, GetUserById, UpdateUser } from './use-case/user-case';
 import { user } from './users.types';
 
 const users = [
@@ -48,6 +48,8 @@ async function userRoute(fastify: FastifyInstance) {
     schema:  getUserSchema,
      handler: async function (request, reply) {
       const { id } = request.params as { id: string };
+
+      console.log('id', id)
       
       const user = await GetUserById(id)
 
@@ -56,7 +58,7 @@ async function userRoute(fastify: FastifyInstance) {
         return;
       }
 
-      return user;
+      return user[0];
     },
   });
 
@@ -66,36 +68,31 @@ async function userRoute(fastify: FastifyInstance) {
      handler: async function (request, reply) {
     
 
-      const newUser = await CreateUser(request.body as user)
+     try {
+       const newUser = await CreateUser(request.body as user)
 
-      console.log('newUser', newUser)
-
-      reply.code(201).send(newUser);
+       reply.code(201).send(newUser[0]);
+     } catch (error) {
+      console.error('error', error)
+      reply.code(500).send({ msg: 'Internal server error' , error});
+     }
     },
   });
 
   // PUT /:id - Update user
   fastify.put('/:id', {
     schema:updateUserSchema,
-    handler(request, reply) {
-      const { id } = request.params as { id: string };
-      const userIndex = users.findIndex((u) => u.id === id);
+    async handler(request, reply) {
+     try {
+       const { id } = request.params as { id: string };
 
-      if (userIndex === -1) {
-        reply.code(404).send({ error: 'User not found' });
-        return;
-      }
+       const updatedUser = await UpdateUser(id, request.body as user);
 
-      const updatedUser = {
-        ...users[userIndex],
-        ...request.body as object,
-        updatedAt: new Date().toISOString(),
-      };
-
-      // Normally: update in DB
-      // users[userIndex] = updatedUser;
-
-      return updatedUser;
+       reply.code(200).send(updatedUser[0]);
+     } catch (error) {
+      reply.code(500).send({ msg: 'Internal server error' , error});
+     }
+   
     },
   });
 
@@ -112,24 +109,31 @@ async function userRoute(fastify: FastifyInstance) {
         },
       },
       response: {
+        200:{
+          type : 'object',
+          properties: {
+            success: { type: 'boolean' },
+            msg : { type: 'string' },
+            statusCode: { type: 'number' }
+          }
+        },
         204: {
           type: 'null',
         },
       },
     },
     async handler(request, reply) {
-      const { id } = request.params as { id: string };
-      const userIndex = users.findIndex((u) => u.id === id);
+     try {
+       const { id } = request.params as { id: string };
+      
+       const deletedUser = await DeleteUser(id);
+ 
+       console.log('deletedUser', deletedUser)
 
-      if (userIndex === -1) {
-        reply.code(404).send({ error: 'User not found' });
-        return;
-      }
-
-      // Normally: delete from DB
-      // users.splice(userIndex, 1);
-
-      reply.code(204).send();
+       reply.code(200).send({ success: true, msg: 'User deleted successfully', statusCode: 200 });
+     } catch (error) {
+      reply.code(500).send({ msg: 'Internal server error' , error});
+     }
     },
   });
 }

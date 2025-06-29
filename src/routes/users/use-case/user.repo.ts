@@ -1,9 +1,9 @@
 import { PgTransaction } from "drizzle-orm/pg-core";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
-import { db } from "../../../db/index.js";
-import { user as userType } from "../users.types.js";
-import { user } from "../../../db/schema.js";
+import { db } from "../../../db/index";
+import { user as userType } from "../users.types";
+import { user } from "../../../db/schema";
 
 type DBClient = PostgresJsDatabase<any> | PgTransaction<any, any, any>;
 
