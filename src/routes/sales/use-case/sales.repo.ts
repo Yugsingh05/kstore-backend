@@ -3,13 +3,14 @@ import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import { db } from "../../../db/index";
 import { products, saleDetails, sales, user } from "../../../db/schema";
+import { salesDetailsType, salesType } from "../sales.types";
 
 type DBClient = PostgresJsDatabase<any> | PgTransaction<any, any, any>;
 
 class salesRepo {
   constructor(private dbInstance: DBClient) {}
 
-  async createSale(data: any) {
+  async createSale(data: salesType) {
     return await this.dbInstance.insert(sales).values(data).returning();
   }
 
@@ -21,22 +22,36 @@ class salesRepo {
     return await this.dbInstance.select().from(sales).where(eq(sales.id, id));
   }
 
-  async CreateSaleDetails(data: any) {
+  async CreateSaleDetails(data: salesDetailsType) {
     return await this.dbInstance.insert(saleDetails).values(data).returning();
   }
 
-  async getFullSalesDetails(id: string) {
-    const res = await this.dbInstance
-      .select()
-      .from(sales)
-      .where(eq(sales.id, id))
-      .leftJoin(saleDetails, eq(sales.id, saleDetails.saleId))
-      .leftJoin(products, eq(saleDetails.productId, products.id))
-      .leftJoin(user, eq(sales.customerId, user.id));
-      
-    return res;
-  }
+ async getFullSalesDetails(id: string) {
+  const res = await this.dbInstance
+    .select()
+    .from(sales)
+    .where(eq(sales.id, id))
+    .leftJoin(saleDetails, eq(sales.id, saleDetails.saleId))
+    .leftJoin(products, eq(saleDetails.productId, products.id))
+    .leftJoin(user, eq(sales.customerId, user.id));
+
+  if (res.length === 0) return null;
+
+  const { sales: saleData, users: userData } = res[0];
+
+  const saleDetailsList = res.map(row => ({
+    ...row.sale_details,
+    product: row.products
+  }));
+
+  return {
+    sale: saleData,
+    user: userData,
+    saleDetails: saleDetailsList
+  };
 }
+}
+
 
 export function SalesRepo(dbInstance: DBClient = db) {
   return new salesRepo(dbInstance);
