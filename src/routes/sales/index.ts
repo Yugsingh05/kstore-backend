@@ -6,7 +6,6 @@ import {
 } from "./use-case/sales.use-case";
 import {
   CreateSaleBodySchema,
-  salesDetailsResponseSchema,
   salesResponseSchema,
 } from "./schema/sales.schema";
 
@@ -16,6 +15,13 @@ async function salesRoute(fastify: FastifyInstance) {
    schema: {
       tags: ["sales"],
       description: "Get a specific sale by ID",
+      response:{
+        200:{
+          type : 'array',
+        items: salesResponseSchema
+        }
+      }
+
     }
     
   }, async (request, reply) => {
