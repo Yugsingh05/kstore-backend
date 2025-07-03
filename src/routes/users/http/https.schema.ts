@@ -16,7 +16,7 @@ export const getUserSchema = {
     type: 'object',
     required: ['id'],
     properties: {
-      id: { type: 'string', format: 'uuid' }
+      id: { type: 'string' }
     }
   },
   response: {

@@ -10,6 +10,7 @@ export const userBodyZodSchema = z.object({
   name: z.string(),
   age: z.number(),
   email: z.string().email(),
+  number: z.string(),
   isAdmin: z.boolean(),
   profileImage: z.string(),
 });
@@ -20,6 +21,7 @@ export const userResponseSchemaObject = z.object({
   age: z.number(),
   email: z.string().email(),
   isAdmin: z.boolean().optional(),
+  number: z.string().optional(),
   profileImage: z.string().url().optional(),
   updatedAt: z.string().datetime().optional(),
   createdAt: z.string().datetime().optional(),

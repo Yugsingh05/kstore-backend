@@ -3,6 +3,8 @@ import { UserRepo } from "./user.repo";
 
 export const CreateUser = (data: user) => {
   const userRepo = UserRepo();
+
+  console.log('data', data)
   return userRepo.createUser(data);
 };
 

@@ -63,21 +63,20 @@ async function userRoute(fastify: FastifyInstance) {
   });
 
   // POST / - Create new user
-  fastify.post('/', {
-    schema: createUserSchema,
-     handler: async function (request, reply) {
-    
-
-     try {
-       const newUser = await CreateUser(request.body as user)
-
-       reply.code(201).send(newUser[0]);
-     } catch (error) {
-      console.error('error', error)
-      reply.code(500).send({ msg: 'Internal server error' , error});
-     }
-    },
-  });
+fastify.post('/', {
+  schema: createUserSchema,
+  handler: async function (request, reply) {
+    try {
+      console.log('Received body:', request.body);
+      const newUser = await CreateUser(request.body as user); // should be an object with all fields
+      console.log('newUser', newUser);
+      reply.code(201).send(newUser[0]); // send the created user object
+    } catch (error) {
+      console.error('error', error);
+      reply.code(500).send({ msg: 'Internal server error', error });
+    }
+  },
+});
 
   // PUT /:id - Update user
   fastify.put('/:id', {

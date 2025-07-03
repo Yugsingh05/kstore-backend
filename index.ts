@@ -1,31 +1,52 @@
-// Require the framework and instantiate it
-import Fastify from 'fastify'
-import swagger from '@fastify/swagger'
-import swaggerUI from '@fastify/swagger-ui'
-import cors from '@fastify/cors'
+import Fastify from 'fastify';
+import swagger from '@fastify/swagger';
+import swaggerUI from '@fastify/swagger-ui';
+import cors from '@fastify/cors';
+import fastifyForm from '@fastify/formbody';
+import fastifyExpress from '@fastify/express';
 
-const fastify = Fastify({ logger: true })
+// Route modules
+import userRoutes from './src/routes/users';
+import productRoutes from './src/routes/products';
+import salesRoutes from './src/routes/sales';
+import categoryRoutes from './src/routes/category';
+import cartRoutes from './src/routes/cart';
+import likeRoutes from './src/routes/likes';
 
-// Register Swagger
+const fastify = Fastify({ logger: true });
+
+// Register CORS
 fastify.register(cors, {
   origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-})
+  allowedHeaders: ['Content-Type', 'Authorization'],
+});
 
-// Register Swagger plugins
+// Register formbody plugin
+fastify.register(fastifyForm);
+
+// ✅ Register Express compatibility plugin
+fastify.register(fastifyExpress).after(() => {
+  // You can now use express-style `.use()` middleware if needed
+  fastify.use((req, res, next) => {
+    console.log(`[Express Middleware] ${req.method} ${req.url}`);
+    next();
+  });
+});
+
+// Register Swagger
 fastify.register(swagger, {
   openapi: {
     info: {
       title: 'KStore API',
       description: 'KStore Backend API documentation',
-      version: '1.0.0'
+      version: '1.0.0',
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server'
-      }
+        url: 'http://localhost:3005',
+        description: 'Development server',
+      },
     ],
     tags: [
       { name: 'users', description: 'User related endpoints' },
@@ -34,20 +55,20 @@ fastify.register(swagger, {
       { name: 'category', description: 'Category related endpoints' },
       { name: 'cart', description: 'Cart related endpoints' },
       { name: 'likes', description: 'Likes related endpoints' },
-      { name: 'system', description: 'System related endpoints' }
-    ]
-  }
-})
+      { name: 'system', description: 'System related endpoints' },
+    ],
+  },
+});
 
 fastify.register(swaggerUI, {
   routePrefix: '/docs',
   uiConfig: {
     docExpansion: 'list',
-    deepLinking: false
-  }
-})
+    deepLinking: false,
+  },
+});
 
-// Declare a route
+// Root route
 fastify.get('/', {
   schema: {
     tags: ['system'],
@@ -56,17 +77,17 @@ fastify.get('/', {
       200: {
         type: 'object',
         properties: {
-          hello: { type: 'string' }
-        }
-      }
-    }
+          hello: { type: 'string' },
+        },
+      },
+    },
   },
-  handler: async (request: any, reply: any) => {
-    return { hello: 'world' }
-  }
-})
+  handler: async () => {
+    return { hello: 'world' };
+  },
+});
 
-// Add more routes here
+// API Status route
 fastify.get('/api/status', {
   schema: {
     description: 'Get the current API status',
@@ -76,48 +97,40 @@ fastify.get('/api/status', {
         type: 'object',
         properties: {
           status: { type: 'string' },
-          timestamp: { type: 'string', format: 'date-time' }
-        }
-      }
-    }
+          timestamp: { type: 'string', format: 'date-time' },
+        },
+      },
+    },
   },
-  handler: async (request: any, reply: any) => {
-    return { 
+  handler: async () => {
+    return {
       status: 'online',
-      timestamp: new Date().toISOString()
-    }
-  }
-})
+      timestamp: new Date().toISOString(),
+    };
+  },
+});
 
-// Register route modules
-import userRoutes from './src/routes/users'
-import productRoutes from './src/routes/products'
-import salesRoutes from './src/routes/sales'
-import categoryRoutes from './src/routes/category'
-import cartRoutes from './src/routes/cart'
-import likeRoutes from './src/routes/likes'
+// Register route modules with prefixes
+fastify.register(userRoutes, { prefix: '/api/users' });
+fastify.register(productRoutes, { prefix: '/api/products' });
+fastify.register(salesRoutes, { prefix: '/api/sales' });
+fastify.register(categoryRoutes, { prefix: '/api/category' });
+fastify.register(cartRoutes, { prefix: '/api/cart' });
+fastify.register(likeRoutes, { prefix: '/api/likes' });
 
-// Register routes with prefixes
-fastify.register(userRoutes, { prefix: '/api/users' })
-fastify.register(productRoutes, { prefix: '/api/products' })
-fastify.register(salesRoutes, { prefix: '/api/sales' })
-fastify.register(categoryRoutes, { prefix: '/api/category' })
-fastify.register(cartRoutes, { prefix: '/api/cart' })
-fastify.register(likeRoutes, { prefix: '/api/likes' })
-
-// Run the server!
+// Start server
 const start = async () => {
   try {
-    // Wait for Swagger to be ready before starting the server
-    await fastify.ready()
-    fastify.swagger()
-    
-    await fastify.listen({ port: 3005, host: '0.0.0.0' })
-    console.log('Documentation available at http://localhost:3000/documentation')
-  } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
-}
+    await fastify.ready(); // wait for plugins like Swagger
+    fastify.swagger();
 
-start()
+    await fastify.listen({ port: 3005, host: '0.0.0.0' });
+    console.log('✅ Server running at http://localhost:3005');
+    console.log('📘 Swagger docs at http://localhost:3005/docs');
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+
+start();
