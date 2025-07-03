@@ -6,12 +6,12 @@ import zodToJsonSchema from "zod-to-json-schema";
 export const userSchema = createSelectSchema(user);
 
 export const userBodyZodSchema = z.object({
+  id: z.string(),
   name: z.string(),
   age: z.number(),
   email: z.string().email(),
   isAdmin: z.boolean(),
   profileImage: z.string(),
-  password: z.string(),
 });
 
 export const userResponseSchemaObject = z.object({
@@ -21,7 +21,6 @@ export const userResponseSchemaObject = z.object({
   email: z.string().email(),
   isAdmin: z.boolean().optional(),
   profileImage: z.string().url().optional(),
-  password: z.string(),
   updatedAt: z.string().datetime().optional(),
   createdAt: z.string().datetime().optional(),
 })

@@ -1,11 +1,17 @@
 // Require the framework and instantiate it
-const fastify = require('fastify')({ 
-  logger: true 
-})
+import Fastify from 'fastify'
+import swagger from '@fastify/swagger'
+import swaggerUI from '@fastify/swagger-ui'
+import cors from '@fastify/cors'
+
+const fastify = Fastify({ logger: true })
 
 // Register Swagger
-const swagger = require('@fastify/swagger')
-const swaggerUI = require('@fastify/swagger-ui')
+fastify.register(cors, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+})
 
 // Register Swagger plugins
 fastify.register(swagger, {
@@ -84,12 +90,12 @@ fastify.get('/api/status', {
 })
 
 // Register route modules
-const userRoutes = require('./src/routes/users')
-const productRoutes = require('./src/routes/products')
-const salesRoutes = require('./src/routes/sales')
-const categoryRoutes = require('./src/routes/category')
-const cartRoutes = require('./src/routes/cart')
-const likeRoutes = require('./src/routes/likes')
+import userRoutes from './src/routes/users'
+import productRoutes from './src/routes/products'
+import salesRoutes from './src/routes/sales'
+import categoryRoutes from './src/routes/category'
+import cartRoutes from './src/routes/cart'
+import likeRoutes from './src/routes/likes'
 
 // Register routes with prefixes
 fastify.register(userRoutes, { prefix: '/api/users' })
@@ -106,7 +112,7 @@ const start = async () => {
     await fastify.ready()
     fastify.swagger()
     
-    await fastify.listen({ port: 3000, host: '0.0.0.0' })
+    await fastify.listen({ port: 3005, host: '0.0.0.0' })
     console.log('Documentation available at http://localhost:3000/documentation')
   } catch (err) {
     fastify.log.error(err)

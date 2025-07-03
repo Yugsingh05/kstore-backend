@@ -17,13 +17,12 @@ export const statusEnum = pgEnum("status", [
 ]);
 
 export const user = pgTable("users", {
-  id: uuid().defaultRandom().primaryKey().notNull(),
+  id: varchar().primaryKey().notNull(),
   name: varchar({ length: 255 }).notNull(),
   age: integer().notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
   isAdmin: boolean().default(false).notNull(),
   profileImage: varchar().notNull(),
-  password: varchar({ length: 255 }).notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -51,7 +50,7 @@ export const products = pgTable("products", {
 
 export const sales = pgTable("sales", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  customerId: uuid()
+  customerId: varchar()
     .notNull()
     .references(() => user.id),
   totalItems: integer().notNull().default(0),
@@ -80,7 +79,7 @@ export const saleDetails = pgTable("sale_details", {
 
 export const cart = pgTable("cart", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: uuid()
+  userId: varchar()
     .notNull()
     .references(() => user.id),
   productId: uuid()
@@ -93,7 +92,7 @@ export const cart = pgTable("cart", {
 
 export const likeProduct = pgTable("like_product", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: uuid()
+  userId: varchar()
     .notNull()
     .references(() => user.id),
   productId: uuid()
