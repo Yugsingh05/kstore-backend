@@ -3,6 +3,7 @@ import {
   createSale,
   getAllSales,
   getFullSalesDetails,
+  getSalesByUserId,
 } from "./use-case/sales.use-case";
 import {
   CreateSaleBodySchema,
@@ -72,6 +73,32 @@ async function salesRoute(fastify: FastifyInstance) {
       const result = await createSale(saleData);
       reply.code(201);
       return result;
+    },
+  })
+
+
+  fastify.get("/sales-by-user/:id", {
+    schema: {
+      tags: ["sales"],
+      description: "Get all sales",
+      params: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: { type: "string" },
+        },
+      },
+      // response: {
+      //   200: {
+      //     type: "array",
+      //     items: salesResponseSchema,
+      //   },
+      // },
+    },
+    handler: async (request : FastifyRequest<{Params: {id : string}}>, reply) => {
+      const id = request.params.id
+      const sales = await getSalesByUserId(id);
+      return sales;
     },
   });
 }

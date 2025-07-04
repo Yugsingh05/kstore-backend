@@ -7,7 +7,7 @@ export const SalesSchema  = createSelectSchema(sales);
 export const salesDetailsSchema = createSelectSchema(saleDetails);
 
 export const salesBodySchema = z.object({
-  customerId: z.string().uuid(),
+  customerId: z.string(),
   totalItems: z.number().min(0).default(0),
   totalAmount: z.number().min(0).default(0),
   discountAmount: z.number().min(0).default(0),

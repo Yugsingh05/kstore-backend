@@ -51,3 +51,8 @@ export const getFullSalesDetails = (id: string) => {
     const salesRepo = SalesRepo();
     return salesRepo.getFullSalesDetails(id);
 };
+
+export const getSalesByUserId = (id: string) => {
+    const salesRepo = SalesRepo();
+    return salesRepo.getSalesByUserId(id);
+};

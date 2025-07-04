@@ -26,6 +26,39 @@ class salesRepo {
     return await this.dbInstance.insert(saleDetails).values(data).returning();
   }
 
+getSalesByUserId = async (id: string) => {
+  const res = await this.dbInstance
+    .select()
+    .from(sales)
+    .where(eq(sales.customerId, id))
+    .leftJoin(saleDetails, eq(sales.id, saleDetails.saleId))
+    .leftJoin(products, eq(saleDetails.productId, products.id));
+
+  const salesMap: Record<string, any> = {};
+
+  res.forEach((row) => {
+    const sale = row.sales;
+    const detail = row.sale_details;
+    const product = row.products;
+
+    if (!salesMap[sale.id]) {
+      salesMap[sale.id] = {
+        ...sale,
+        saleDetails: [],
+      };
+    }
+
+    if (detail && product) {
+      salesMap[sale.id].saleDetails.push({
+        ...detail,
+        product,
+      });
+    }
+  });
+
+  // Return as an array
+  return Object.values(salesMap);
+};
  async getFullSalesDetails(id: string) {
   const res = await this.dbInstance
     .select()
