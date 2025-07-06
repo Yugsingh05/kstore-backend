@@ -1,8 +1,8 @@
 import { PgTransaction } from "drizzle-orm/pg-core";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../../../db/index";
-import { cart } from "../../../db/schema";
+import { cart, products } from "../../../db/schema";
 
 type DBClient = PostgresJsDatabase<any> | PgTransaction<any, any, any>;
 
@@ -21,14 +21,28 @@ class cart_repo {
     const res = await this.dbInstance
       .update(cart)
       .set(data)
-      .where(eq(cart.id, id))
+      .where(and(eq(cart.id, id),eq(cart.productId, data.productId)))
       .returning();
-    
+
     return res;
   }
 
   async GetCart(id: string) {
-    return await this.dbInstance.select().from(cart).where(eq(cart.userId, id));
+    const res = await this.dbInstance
+      .select({
+        productId: products.id,
+        productName: products.name,
+        productDescription: products.description,
+        productPrice: products.price,
+        productImageUrl: products.imageUrl,
+        quantity: cart.quantity,
+        CartId : cart.id
+      })
+      .from(cart)
+      .where(eq(cart.userId, id))
+      .leftJoin(products, eq(cart.productId, products.id));
+
+    return res
   }
 }
 

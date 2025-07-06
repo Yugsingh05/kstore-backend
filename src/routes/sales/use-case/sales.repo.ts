@@ -1,6 +1,6 @@
 import { PgTransaction } from "drizzle-orm/pg-core";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "../../../db/index";
 import { products, saleDetails, sales, user } from "../../../db/schema";
 import { salesDetailsType, salesType } from "../sales.types";
@@ -11,7 +11,11 @@ class salesRepo {
   constructor(private dbInstance: DBClient) {}
 
   async createSale(data: salesType) {
-    return await this.dbInstance.insert(sales).values(data).returning();
+    const res = await this.dbInstance.insert(sales).values(data).returning();
+
+    
+
+    return res;
   }
 
   async getAllSales() {
@@ -23,7 +27,12 @@ class salesRepo {
   }
 
   async CreateSaleDetails(data: salesDetailsType) {
-    return await this.dbInstance.insert(saleDetails).values(data).returning();
+    const res= await this.dbInstance.insert(saleDetails).values(data).returning();
+    await this.dbInstance.update(products)
+      .set({ inventory: sql`${products.inventory} - ${data.quantity}` })
+      .where(eq(products.id, data.productId));
+
+      return res
   }
 
 getSalesByUserId = async (id: string) => {

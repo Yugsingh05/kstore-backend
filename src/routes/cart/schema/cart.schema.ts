@@ -3,7 +3,7 @@ import zodToJsonSchema from "zod-to-json-schema";
 
 
 export const cartSchema = z.object({
-    userId : z.string().uuid().nonempty(),
+    userId : z.string().nonempty(),
     productId: z.string().uuid().nonempty(),
     quantity: z.number().min(1).default(1),
 })
@@ -11,7 +11,7 @@ export const cartSchema = z.object({
 
 export const cartResponseSchema = z.object({
     id: z.string(),
-    userId: z.string().uuid().nonempty(),
+    userId: z.string().nonempty(),
     productId: z.string().uuid().nonempty(),
     quantity: z.number().min(1).default(1),
     createdAt: z.string().datetime(),

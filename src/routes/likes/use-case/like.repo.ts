@@ -2,7 +2,7 @@ import { PgTransaction } from "drizzle-orm/pg-core";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import { db } from "../../../db/index";
-import { cart, likeProduct } from "../../../db/schema";
+import { cart, likeProduct, products } from "../../../db/schema";
 
 type DBClient = PostgresJsDatabase<any> | PgTransaction<any, any, any>;
 
@@ -18,7 +18,12 @@ class likeRepo{
   }
 
   async GetLike(id: string) {
-    return await this.dbInstance.select().from(likeProduct).where(eq(likeProduct.userId, id));
+    const res = await this.dbInstance.select().from(likeProduct).where(eq(likeProduct.userId, id)).leftJoin(products, eq(likeProduct.productId, products.id));
+
+    return res.map((row) => ({
+      ...row.like_product,
+      product: row.products,
+    }));
   } 
 
 }

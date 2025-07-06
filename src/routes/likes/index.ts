@@ -12,15 +12,15 @@ async function likeRoutes(fastify: FastifyInstance) {
         type: "object",
         required: ["id"],
         properties: {
-          id: { type: "string", format: "uuid" },
+          id: { type: "string" },
         },
       },
-      response:{
-          200 : {
-            type :"array",
-            items : LikeResponseSchema
-          }
-      }
+      // response:{
+      //     200 : {
+      //       type :"array",
+      //       items : LikeResponseSchema
+      //     }
+      // }
     }
     
   }, async (request : FastifyRequest<{Params: {id : string}}>, reply) => {

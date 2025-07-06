@@ -18,19 +18,19 @@ async function cartRoutes(fastify: FastifyInstance) {
       schema: {
         tags: ["cart"],
         description: "Get a specific sale by ID",
-        quer: {
+        params: {
           type: "object",
           required: ["id"],
           properties: {
-            id: { type: "string", format: "uuid" },
+            id: { type: "string"},
           },
         },
-        response: {
-          200: {
-            type: "array",
-            items: cartResponseSchemaObject,
-          },
-        },
+        // response: {
+        //   200: {
+        //     type: "array",
+        //     items: cartResponseSchemaObject,
+        //   },
+        // },
       },
     },
     async (request: FastifyRequest<{ Params: { id: string } }>, reply) => {
@@ -94,7 +94,7 @@ async function cartRoutes(fastify: FastifyInstance) {
     {
       schema: {
         tags: ["cart"],
-        description: "Get a specific sale by ID",
+        description: "delete a specific cart by ID",
         params: {
           type: "object",
           required: ["id"],
