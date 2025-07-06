@@ -7,7 +7,8 @@
     "dev": "ts-node-dev --respawn --transpile-only index.ts",
     "db:generate": "npx drizzle-kit generate --config=drizzle.config.ts",
     "db:migrate": "npx drizzle-kit migrate",
-    "db:drop": "npx drizzle-kit drop"
+    "db:drop": "npx drizzle-kit drop",
+    "db:seed": "ts-node drizzle.seed.ts"
   },
   "keywords": [],
   "author": "",

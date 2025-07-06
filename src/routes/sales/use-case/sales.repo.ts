@@ -1,6 +1,6 @@
 import { PgTransaction } from "drizzle-orm/pg-core";
 import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { eq, sql } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { db } from "../../../db/index";
 import { products, saleDetails, sales, user } from "../../../db/schema";
 import { salesDetailsType, salesType } from "../sales.types";
@@ -41,7 +41,8 @@ getSalesByUserId = async (id: string) => {
     .from(sales)
     .where(eq(sales.customerId, id))
     .leftJoin(saleDetails, eq(sales.id, saleDetails.saleId))
-    .leftJoin(products, eq(saleDetails.productId, products.id));
+    .leftJoin(products, eq(saleDetails.productId, products.id))
+    .orderBy(desc(sales.createdAt));
 
   const salesMap: Record<string, any> = {};
 
