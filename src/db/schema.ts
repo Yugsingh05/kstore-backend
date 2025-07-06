@@ -26,6 +26,7 @@ export const user = pgTable("users", {
   isAdmin: boolean().default(false).notNull(),
   profileImage: varchar().notNull(),
   number: varchar().notNull(),
+  address: varchar({ length: 255 }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -59,6 +60,7 @@ export const sales = pgTable("sales", {
   customerId: varchar().notNull().references(() => user.id), // ✅ using varchar
   totalItems: integer().notNull().default(0),
   totalAmount: doublePrecision().notNull().default(0),
+  shippingCharges: doublePrecision().notNull().default(0),
   discountAmount: doublePrecision().notNull().default(0),
   paymentMethod: varchar({ length: 255 }).notNull(),
   Salesstatus: statusEnum("status").default("PENDING").notNull(),

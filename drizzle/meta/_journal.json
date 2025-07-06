@@ -43,6 +43,13 @@
       "when": 1751572546210,
       "tag": "0005_removed_uuid_from_name",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751822319938,
+      "tag": "0006_woozy_mephisto",
+      "breakpoints": true
     }
   ]
 }

@@ -11,6 +11,7 @@ export const salesBodySchema = z.object({
   totalItems: z.number().min(0).default(0),
   totalAmount: z.number().min(0).default(0),
   discountAmount: z.number().min(0).default(0),
+  shippingCharges: z.number().min(0).default(0),
   paymentMethod: z.string().min(1).default("CASH"),
   salesStatus: z.enum(["PENDING", "COMPLETED", "CANCELLED", "REFUNDED"]).default("PENDING")
 });
