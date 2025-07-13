@@ -3,6 +3,12 @@ node_modules/
 dist/
 build/
 
+# Ignore compiled JavaScript files (when TypeScript files are compiled in-place)
+*.js
+*.js.map
+!jest.config.js
+!drizzle.config.js
+
 # Ignore environment variable files
 .env
 .env.local
