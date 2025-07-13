@@ -8,13 +8,19 @@ export const productSchema = createSelectSchema(products);
 export const categorySchema = createSelectSchema(category);
 
 export const ProductObjectSchema = z.object({
-    name: z.string().nonempty(),
-    description: z.string().nonempty(),
-    price: z.number().min(0),
-    categoryId: z.string().uuid().nullable(),
-    inventory: z.number().min(0),
-    imageUrl: z.string(),
-})
+  name: z.string().nonempty(),
+  description: z.string().nonempty(),
+  price: z.number().min(0),
+  categoryId: z.string().uuid().nullable(),
+  inventory: z.number().min(0),
+  imageUrl: z.string().nonempty(),
+
+  productImages: z.array(z.string()).default([]),
+  dimensions: z.string().optional(),
+  material: z.string().optional(),
+  customization: z.string().optional(),
+  features: z.array(z.string()).default([]),
+});
 
 export const CategoryObjectSchema = z.object({
     name: z.string().nonempty(),
