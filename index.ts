@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUI from '@fastify/swagger-ui';
 import cors from '@fastify/cors';
@@ -28,7 +28,7 @@ fastify.register(fastifyForm);
 // ✅ Register Express compatibility plugin
 fastify.register(fastifyExpress).after(() => {
   // You can now use express-style `.use()` middleware if needed
-  fastify.use((req, res, next) => {
+  fastify.use((req :FastifyRequest, res :FastifyReply, next: () => void ) => {
     console.log(`[Express Middleware] ${req.method} ${req.url}`);
     next();
   });
