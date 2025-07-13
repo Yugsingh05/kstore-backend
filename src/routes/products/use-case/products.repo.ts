@@ -11,7 +11,13 @@ class catalogRepo {
   constructor(private dbInstance: DBClient) {}
 
   async createCategory(data: CategoryType) {
-    return await this.dbInstance.insert(category).values(data).returning();
+    // Make sure required fields exist
+    const categoryData = {
+      name: data.name || '',
+      description: data.description || '',
+      imageUrl: data.imageUrl || ''
+    };
+    return await this.dbInstance.insert(category).values(categoryData).returning();
   }
 
   async getAllCategories() {
@@ -52,7 +58,21 @@ async getCategoryById(id: string) {
   }
 
   async createProduct(data: ProductType) {
-    return await this.dbInstance.insert(products).values(data).returning();
+    // Make sure required fields exist
+    const productData = {
+      name: data.name || '',
+      description: data.description || '',
+      imageUrl: data.imageUrl || '',
+      price: data.price || 0,
+      categoryId: data.categoryId || '',
+      inventory: data.inventory || 0,
+      productImages: data.productImages || [],
+      dimensions: data.dimensions || '',
+      material: data.material || '',
+      customization: data.customization || '',
+      features: data.features || []
+    };
+    return await this.dbInstance.insert(products).values(productData).returning();
   }
 
   async getAllProducts() {

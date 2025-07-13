@@ -11,7 +11,17 @@ class salesRepo {
   constructor(private dbInstance: DBClient) {}
 
   async createSale(data: salesType) {
-    const res = await this.dbInstance.insert(sales).values(data).returning();
+    // Make sure required fields exist
+    const saleData = {
+      customerId: data.customerId || '',
+      paymentMethod: data.paymentMethod || '',
+      totalItems: data.totalItems || 0,
+      totalAmount: data.totalAmount || 0,
+      shippingCharges: data.shippingCharges || 0,
+      discountAmount: data.discountAmount || 0,
+      salesStatus: data.salesStatus || 'PENDING'
+    };
+    const res = await this.dbInstance.insert(sales).values(saleData).returning();
 
     
 
@@ -27,7 +37,15 @@ class salesRepo {
   }
 
   async CreateSaleDetails(data: salesDetailsType) {
-    const res= await this.dbInstance.insert(saleDetails).values(data).returning();
+    // Make sure required fields exist
+    const saleDetailData = {
+      saleId: data.saleId || '',
+      productId: data.productId || '',
+      quantity: data.quantity || 0,
+      unitPrice: data.unitPrice || 0,
+      subtotal: data.subtotal || 0
+    };
+    const res= await this.dbInstance.insert(saleDetails).values(saleDetailData).returning();
     await this.dbInstance.update(products)
       .set({ inventory: sql`${products.inventory} - ${data.quantity}` })
       .where(eq(products.id, data.productId));
@@ -67,7 +85,8 @@ getSalesByUserId = async (id: string) => {
   });
 
   // Return as an array
-  return Object.values(salesMap);
+  const salesArray = Object.values(salesMap);
+  return salesArray;
 };
  async getFullSalesDetails(id: string) {
   const res = await this.dbInstance

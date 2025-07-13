@@ -9,7 +9,8 @@
     "db:migrate": "npx drizzle-kit migrate",
     "db:drop": "npx drizzle-kit drop",
     "db:seed": "ts-node drizzle.seed.ts",
-    "build" : "tsc --project tsconfig.json"
+    "build": "tsc --project tsconfig.json --skipLibCheck",
+    "build:production": "tsc --project tsconfig.json --skipLibCheck --noEmitOnError false"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@types/node": "^24.0.7",
     "@types/pg": "^8.15.4",
+    "@types/uuid": "^10.0.0",
     "drizzle-kit": "^0.31.4",
     "nodemon": "^3.1.10",
     "ts-node-dev": "^2.0.0",

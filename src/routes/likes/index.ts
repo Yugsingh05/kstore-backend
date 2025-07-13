@@ -6,8 +6,6 @@ async function likeRoutes(fastify: FastifyInstance) {
 
  fastify.get("/:id",{
    schema: {
-      tags: ["likes"],
-      description: "Get a specific sale by ID",
       params:{
         type: "object",
         required: ["id"],
@@ -32,8 +30,6 @@ async function likeRoutes(fastify: FastifyInstance) {
 
   fastify.post("/",{
     schema: {
-      tags: ["likes"],
-      description: "Get a specific sale by ID",
       body : LikeBodySchema,
       response:{
           200 :LikeResponseSchema
@@ -47,8 +43,6 @@ async function likeRoutes(fastify: FastifyInstance) {
 
    fastify.delete("/:id",{
     schema: {
-      tags: ["likes"],
-      description: "Get a specific sale by ID",
 
       params:{
         type: "object",
