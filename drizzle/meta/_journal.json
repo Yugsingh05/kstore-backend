@@ -64,6 +64,20 @@
       "when": 1751826957002,
       "tag": "0008_wealthy_omega_red",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1752518063423,
+      "tag": "0009_gorgeous_chamber",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1752518829963,
+      "tag": "0010_grey_songbird",
+      "breakpoints": true
     }
   ]
 }

@@ -56,6 +56,12 @@ export const products = pgTable("products", {
   material: varchar({ length: 255 }),
   customization: varchar({ length: 255 }),
   features: jsonb().default([]),
+  costPrice: integer().notNull().default(20),
+  setOf10: integer().default(0),
+  setof20 : integer().default(0),
+  setof50 : integer().default(0),
+  setof100 : integer().default(0),
+  discount: integer().notNull().default(0),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -63,7 +69,7 @@ export const products = pgTable("products", {
 // Sales
 export const sales = pgTable("sales", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  customerId: varchar().notNull().references(() => user.id), // ✅ using varchar
+  customerId: varchar().notNull().references(() => user.id),
   totalItems: integer().notNull().default(0),
   totalAmount: doublePrecision().notNull().default(0),
   shippingCharges: doublePrecision().notNull().default(0),
@@ -89,7 +95,7 @@ export const saleDetails = pgTable("sale_details", {
 // Cart
 export const cart = pgTable("cart", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: varchar().notNull().references(() => user.id), // ✅ using varchar
+  userId: varchar().notNull().references(() => user.id),
   productId: uuid().notNull().references(() => products.id),
   quantity: integer().notNull(),
   createdAt: timestamp().notNull().defaultNow(),
@@ -99,7 +105,7 @@ export const cart = pgTable("cart", {
 // // Product Likes
 export const likeProduct = pgTable("like_product", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: varchar().notNull().references(() => user.id), // ✅ using varchar
+  userId: varchar().notNull().references(() => user.id),
   productId: uuid().notNull().references(() => products.id),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),

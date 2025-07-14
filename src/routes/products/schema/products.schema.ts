@@ -14,12 +14,18 @@ export const ProductObjectSchema = z.object({
   categoryId: z.string().uuid().nullable(),
   inventory: z.number().min(0),
   imageUrl: z.string().nonempty(),
-
   productImages: z.array(z.string()).default([]),
   dimensions: z.string().optional(),
   material: z.string().optional(),
   customization: z.string().optional(),
   features: z.array(z.string()).default([]),
+  costPrice: z.number().min(0),
+  setOf10: z.number().min(0),
+  setof20 : z.number().min(0),
+  setof50 : z.number().min(0),
+  setof100 : z.number().min(0),
+  discount: z.number().min(0),
+  
 });
 
 export const CategoryObjectSchema = z.object({
