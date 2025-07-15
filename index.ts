@@ -44,7 +44,7 @@ fastify.register(swagger, {
     },
     servers: [
       {
-        url: 'http://localhost:3005',
+        url: 'https://kstore-backend.onrender.com/',
         description: 'Development server',
       },
     ],
@@ -124,7 +124,7 @@ const start = async () => {
     await fastify.ready(); // wait for plugins like Swagger
     fastify.swagger();
 
-    await fastify.listen({ port: 3005, host: '0.0.0.0' });
+    await fastify.listen({ port: Number(process.env.PORT), host: '0.0.0.0' });
     console.log('✅ Server running at http://localhost:3005');
     console.log('📘 Swagger docs at http://localhost:3005/docs');
   } catch (err) {

@@ -36,7 +36,8 @@ class cart_repo {
         productPrice: products.price,
         productImageUrl: products.imageUrl,
         quantity: cart.quantity,
-        CartId : cart.id
+        CartId : cart.id,
+        invetory: products.inventory
       })
       .from(cart)
       .where(eq(cart.userId, id))
