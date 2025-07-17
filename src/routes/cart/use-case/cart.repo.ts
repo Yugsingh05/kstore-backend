@@ -3,6 +3,7 @@ import { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { and, eq } from "drizzle-orm";
 import { db } from "../../../db/index";
 import { cart, products } from "../../../db/schema";
+import { custom } from "zod";
 
 type DBClient = PostgresJsDatabase<any> | PgTransaction<any, any, any>;
 
@@ -37,7 +38,12 @@ class cart_repo {
         productImageUrl: products.imageUrl,
         quantity: cart.quantity,
         CartId : cart.id,
-        invetory: products.inventory
+        invetory: products.inventory,
+        fontStyle: cart.fontStyle,
+        customizationName: cart.customizationName
+
+
+        
       })
       .from(cart)
       .where(eq(cart.userId, id))

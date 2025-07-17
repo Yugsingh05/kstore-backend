@@ -1,0 +1,1 @@
+ALTER TABLE "cart" ADD COLUMN "customizationName" varchar(255);

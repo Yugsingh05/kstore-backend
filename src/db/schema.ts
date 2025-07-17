@@ -112,6 +112,7 @@ export const cart = pgTable("cart", {
   quantity: integer().notNull(),
   subtotal: doublePrecision().notNull().default(0),
   fontStyle: varchar({ length: 255 }),
+  customizationName: varchar({ length: 255 }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });

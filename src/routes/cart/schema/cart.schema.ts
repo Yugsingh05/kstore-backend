@@ -5,6 +5,8 @@ export const cartSchema = z.object({
   userId: z.string().nonempty(),
   productId: z.string().uuid().nonempty(),
   quantity: z.number().min(1).default(1),
+  fontStyle: z.string().optional(),
+  customizationName: z.string().optional(),
 });
 
 export const cartResponseSchema = z.object({
@@ -12,8 +14,8 @@ export const cartResponseSchema = z.object({
   userId: z.string().nonempty(),
   productId: z.string().uuid().nonempty(),
   quantity: z.number().min(1).default(1),
-  fontStyle: z.string().optional(),
-  customizationName: z.string().optional(),
+  fontStyle: z.string().nullable(),
+  customizationName: z.string().nullable()  ,
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 });
