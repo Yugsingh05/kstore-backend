@@ -58,9 +58,9 @@ export const products = pgTable("products", {
   features: jsonb().default([]),
   costPrice: integer().notNull().default(20),
   setOf10: integer().default(0),
-  setof20 : integer().default(0),
-  setof50 : integer().default(0),
-  setof100 : integer().default(0),
+  setof20: integer().default(0),
+  setof50: integer().default(0),
+  setof100: integer().default(0),
   discount: integer().notNull().default(0),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
@@ -69,7 +69,9 @@ export const products = pgTable("products", {
 // Sales
 export const sales = pgTable("sales", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  customerId: varchar().notNull().references(() => user.id),
+  customerId: varchar()
+    .notNull()
+    .references(() => user.id),
   totalItems: integer().notNull().default(0),
   totalAmount: doublePrecision().notNull().default(0),
   shippingCharges: doublePrecision().notNull().default(0),
@@ -83,11 +85,17 @@ export const sales = pgTable("sales", {
 // Sale Details
 export const saleDetails = pgTable("sale_details", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  saleId: uuid().notNull().references(() => sales.id),
-  productId: uuid().notNull().references(() => products.id),
+  saleId: uuid()
+    .notNull()
+    .references(() => sales.id),
+  productId: uuid()
+    .notNull()
+    .references(() => products.id),
   quantity: integer().notNull(),
   unitPrice: doublePrecision().notNull().default(0),
   subtotal: doublePrecision().notNull().default(0),
+  fontStyle: varchar({ length: 255 }),
+  customizationName: varchar({ length: 255 }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -95,9 +103,15 @@ export const saleDetails = pgTable("sale_details", {
 // Cart
 export const cart = pgTable("cart", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: varchar().notNull().references(() => user.id),
-  productId: uuid().notNull().references(() => products.id),
+  userId: varchar()
+    .notNull()
+    .references(() => user.id),
+  productId: uuid()
+    .notNull()
+    .references(() => products.id),
   quantity: integer().notNull(),
+  subtotal: doublePrecision().notNull().default(0),
+  fontStyle: varchar({ length: 255 }),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -105,8 +119,12 @@ export const cart = pgTable("cart", {
 // // Product Likes
 export const likeProduct = pgTable("like_product", {
   id: uuid().defaultRandom().primaryKey().notNull(),
-  userId: varchar().notNull().references(() => user.id),
-  productId: uuid().notNull().references(() => products.id),
+  userId: varchar()
+    .notNull()
+    .references(() => user.id),
+  productId: uuid()
+    .notNull()
+    .references(() => products.id),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });

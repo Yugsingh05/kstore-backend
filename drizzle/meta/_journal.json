@@ -78,6 +78,20 @@
       "when": 1752518829963,
       "tag": "0010_grey_songbird",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1752686852617,
+      "tag": "0011_silent_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1752777999075,
+      "tag": "0012_spotty_living_tribunal",
+      "breakpoints": true
     }
   ]
 }
