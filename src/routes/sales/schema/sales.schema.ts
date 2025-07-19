@@ -28,6 +28,10 @@ export const salesDetailsBodySchema = z.object({
   subtotal: z.number().default(0),
   fontStyle: z.string().optional(),
   customizationName: z.string().optional(),
+  setOf10: z.number().min(0).default(0),
+  setof20 : z.number().min(0).default(0),
+  setof50 : z.number().min(0).default(0),
+  setof100 : z.number().min(0).default(0),
 });
 
 export const completeSaleSchema = z.object({

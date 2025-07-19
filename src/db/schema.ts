@@ -96,6 +96,10 @@ export const saleDetails = pgTable("sale_details", {
   subtotal: doublePrecision().notNull().default(0),
   fontStyle: varchar({ length: 255 }),
   customizationName: varchar({ length: 255 }),
+  setOf10: integer().default(0),
+  setof20: integer().default(0),
+  setof50: integer().default(0),
+  setof100: integer().default(0),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
@@ -113,6 +117,10 @@ export const cart = pgTable("cart", {
   subtotal: doublePrecision().notNull().default(0),
   fontStyle: varchar({ length: 255 }),
   customizationName: varchar({ length: 255 }),
+  setOf10: integer().default(0),
+  setof20: integer().default(0),
+  setof50: integer().default(0),
+  setof100: integer().default(0),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
