@@ -61,3 +61,8 @@ export const CancelSale = (id: string) => {
     const salesRepo = SalesRepo();
     return salesRepo.CancelSale(id);
 };
+
+export const cancelSaleDetails = (id: string) => {
+    const salesRepo = SalesRepo();
+    return salesRepo.cancelSaleDetails(id);
+};

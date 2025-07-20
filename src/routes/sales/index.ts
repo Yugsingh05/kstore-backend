@@ -1,6 +1,7 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 import {
   CancelSale,
+  cancelSaleDetails,
   createSale,
   getAllSales,
   getFullSalesDetails,
@@ -13,24 +14,26 @@ import {
 
 async function salesRoute(fastify: FastifyInstance) {
   // GET all sales with optional filters
-  fastify.get("/",{
-   schema: {
-      tags: ["sales"],
-      description: "Get a specific sale by ID",
-      response:{
-        200:{
-          type : 'array',
-        items: salesResponseSchema
-        }
-      }
-
+  fastify.get(
+    "/",
+    {
+      schema: {
+        tags: ["sales"],
+        description: "Get a specific sale by ID",
+        response: {
+          200: {
+            type: "array",
+            items: salesResponseSchema,
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      // const { page = 1, limit = 10, userId, status, startDate, endDate } = request.query;
+      const result = await getAllSales();
+      return result;
     }
-    
-  }, async (request, reply) => {
-    // const { page = 1, limit = 10, userId, status, startDate, endDate } = request.query;
-    const result = await getAllSales();
-    return result;
-  });
+  );
 
   // GET sale by ID with full details
   fastify.get("/:id", {
@@ -44,7 +47,6 @@ async function salesRoute(fastify: FastifyInstance) {
           id: { type: "string", format: "uuid" },
         },
       },
-     
     },
     handler: async (
       request: FastifyRequest<{ Params: { id: string } }>,
@@ -56,7 +58,7 @@ async function salesRoute(fastify: FastifyInstance) {
         reply.code(404);
         throw new Error("Sale not found");
       }
-      return sale
+      return sale;
     },
   });
 
@@ -75,8 +77,7 @@ async function salesRoute(fastify: FastifyInstance) {
       reply.code(201);
       return result;
     },
-  })
-
+  });
 
   fastify.get("/sales-by-user/:id", {
     schema: {
@@ -96,13 +97,15 @@ async function salesRoute(fastify: FastifyInstance) {
       //   },
       // },
     },
-    handler: async (request : FastifyRequest<{Params: {id : string}}>, reply) => {
-      const id = request.params.id
+    handler: async (
+      request: FastifyRequest<{ Params: { id: string } }>,
+      reply
+    ) => {
+      const id = request.params.id;
       const sales = await getSalesByUserId(id);
       return sales;
     },
   });
-
 
   fastify.patch("cancel-sale/:id", {
     schema: {
@@ -115,10 +118,9 @@ async function salesRoute(fastify: FastifyInstance) {
           id: { type: "string", format: "uuid" },
         },
       },
-     
     },
     handler: async (
-      request: FastifyRequest<{ Params: { id: string }}>,
+      request: FastifyRequest<{ Params: { id: string } }>,
       reply
     ) => {
       const { id } = request.params;
@@ -126,6 +128,27 @@ async function salesRoute(fastify: FastifyInstance) {
       const result = await CancelSale(id);
       reply.code(201);
       return result;
+    },
+  });
+
+  fastify.patch("cancel-items/:id", {
+    schema: {
+      tags: ["sales"],
+      description: "cancel item  by ID",
+      params: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: { type: "string", format: "uuid" },
+        },
+      },
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: { id: string } }>,
+      reply
+    ) => {
+      const { id } = request.params;
+      return await cancelSaleDetails(id);
     },
   });
 }

@@ -119,23 +119,59 @@ class salesRepo {
       };
     }
 
-    const salesCancel = await this.dbInstance
+   await this.dbInstance
       .update(sales)
       .set({ Salesstatus: "CANCELLED" })
       .where(eq(sales.id, id))
       .returning();
 
-    const saleDetailsCancel = await this.dbInstance
+    await this.dbInstance
       .update(saleDetails)
       .set({ saleDetailsStatus: "CANCELLED" })
       .where(eq(saleDetails.saleId, id))
       .returning();
 
-    console.log("salesCancel", salesCancel);
-    console.log("saleDetailsCancel", saleDetailsCancel);
-
     return {
       msg: "Sale cancelled successfully",
+      success: true,
+    };
+  }
+
+
+
+  async cancelSaleDetails(id: string) {
+
+    const isSaleDetailCancelled = await this.dbInstance
+      .select()
+      .from(saleDetails)
+      .where((eq(saleDetails.id, id)))
+
+
+      if(!isSaleDetailCancelled.length){
+        return {
+          msg: "Order not found",
+          success: false,
+        };
+      }
+
+
+    if (isSaleDetailCancelled.length > 0 && isSaleDetailCancelled[0].saleDetailsStatus === "CANCELLED") {
+
+      return {
+        msg: "Order already cancelled",
+        success: false,
+      };
+    }
+
+
+    await this.dbInstance
+      .update(saleDetails)
+      .set({ saleDetailsStatus: "CANCELLED" })
+      .where(eq(saleDetails.id, id))
+      .returning();
+
+    return {
+      msg: "Order cancelled successfully",
       success: true,
     };
   }
