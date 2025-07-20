@@ -44,7 +44,7 @@ fastify.register(swagger, {
     },
     servers: [
       {
-        url: 'https://kstore-backend.onrender.com/',
+        url: 'http://localhost:3005/',
         description: 'Development server',
       },
     ],

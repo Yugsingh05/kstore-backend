@@ -22,7 +22,7 @@ class cart_repo {
     const res = await this.dbInstance
       .update(cart)
       .set(data)
-      .where(and(eq(cart.id, id),eq(cart.productId, data.productId)))
+      .where(and(eq(cart.id, id), eq(cart.productId, data.productId)))
       .returning();
 
     return res;
@@ -37,19 +37,24 @@ class cart_repo {
         productPrice: products.price,
         productImageUrl: products.imageUrl,
         quantity: cart.quantity,
-        CartId : cart.id,
+        CartId: cart.id,
         invetory: products.inventory,
         fontStyle: cart.fontStyle,
-        customizationName: cart.customizationName
-
-
-        
+        customizationName: cart.customizationName,
+        setOf10: cart.setOf10,
+        priceOf10: products.setOf10,
+        setof20: cart.setof20,
+        priceOf20: products.setof20,
+        setof50: cart.setof50,
+        priceOf50: products.setof50,
+        setof100: cart.setof100,
+        priceOf100: products.setof100,
       })
       .from(cart)
       .where(eq(cart.userId, id))
       .leftJoin(products, eq(cart.productId, products.id));
 
-    return res
+    return res;
   }
 }
 

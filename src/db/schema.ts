@@ -100,6 +100,7 @@ export const saleDetails = pgTable("sale_details", {
   setof20: integer().default(0),
   setof50: integer().default(0),
   setof100: integer().default(0),
+  saleDetailsStatus: statusEnum("status").default("PENDING").notNull(),
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });

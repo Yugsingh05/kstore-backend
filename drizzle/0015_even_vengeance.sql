@@ -1,0 +1,1 @@
+ALTER TABLE "sale_details" ADD COLUMN "status" "status" DEFAULT 'PENDING' NOT NULL;

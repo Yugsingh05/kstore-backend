@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 import {
+  CancelSale,
   createSale,
   getAllSales,
   getFullSalesDetails,
@@ -99,6 +100,32 @@ async function salesRoute(fastify: FastifyInstance) {
       const id = request.params.id
       const sales = await getSalesByUserId(id);
       return sales;
+    },
+  });
+
+
+  fastify.patch("cancel-sale/:id", {
+    schema: {
+      tags: ["sales"],
+      description: "Update a sale by ID",
+      params: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: { type: "string", format: "uuid" },
+        },
+      },
+     
+    },
+    handler: async (
+      request: FastifyRequest<{ Params: { id: string }}>,
+      reply
+    ) => {
+      const { id } = request.params;
+
+      const result = await CancelSale(id);
+      reply.code(201);
+      return result;
     },
   });
 }

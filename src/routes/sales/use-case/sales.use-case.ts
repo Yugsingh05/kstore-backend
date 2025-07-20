@@ -56,3 +56,8 @@ export const getSalesByUserId = (id: string) => {
     const salesRepo = SalesRepo();
     return salesRepo.getSalesByUserId(id);
 };
+
+export const CancelSale = (id: string) => {
+    const salesRepo = SalesRepo();
+    return salesRepo.CancelSale(id);
+};

@@ -30,6 +30,7 @@ export const salesDetailsBodySchema = z.object({
   customizationName: z.string().optional(),
   setOf10: z.number().min(0).default(0),
   setof20 : z.number().min(0).default(0),
+  saleDetailsStatus: z.enum(["PENDING", "COMPLETED", "CANCELLED", "REFUNDED"]).default("PENDING"),
   setof50 : z.number().min(0).default(0),
   setof100 : z.number().min(0).default(0),
 });
