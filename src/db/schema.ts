@@ -17,6 +17,7 @@ export const statusEnum = pgEnum("status", [
   "COMPLETED",
   "CANCELLED",
   "REFUNDED",
+  "PROCESSING"
 ]);
 
 // Users table - using varchar for ID
