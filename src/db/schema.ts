@@ -13,6 +13,7 @@ import {
 // Enum for sales status
 export const statusEnum = pgEnum("status", [
   "PENDING",
+  "OUTFORDELIVERY",
   "COMPLETED",
   "CANCELLED",
   "REFUNDED",
@@ -138,3 +139,4 @@ export const likeProduct = pgTable("like_product", {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow(),
 });
+
